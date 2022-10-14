@@ -14,7 +14,7 @@ def setup(dirDrivers):
     driver = webdriver.Chrome()
     return driver
 
-def firstTest(driver):
+def supp1(driver):
 
     driver.get(url='https://demo.seleniumeasy.com/jquery-download-progress-bar-demo.html')
     driver.implicitly_wait(30)
@@ -45,7 +45,7 @@ def firstTest(driver):
     )
 
 
-def secondTest(driver : selenium.webdriver.chrome.webdriver.WebDriver):
+def supp2(driver : selenium.webdriver.chrome.webdriver.WebDriver):
     """
     :type driver: webdriver.Chrome()
     """
@@ -74,7 +74,7 @@ def secondTest(driver : selenium.webdriver.chrome.webdriver.WebDriver):
 
 d = setup(r';C:\Users\pedrov\Desktop\Programs\SeleniumDrivers')
 #firstTest(d)
-secondTest(d)
+supp2(d)
 
 #input1 = d.find_element(by=By.ID, value="sum1")
 #input1.clear()
