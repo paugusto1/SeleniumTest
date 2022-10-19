@@ -108,6 +108,8 @@ class Booking(webdriver.Chrome):
 
         filtration.filterByStar(numStar='1+')
 
+        filtration.filterByScore(numScore='8+')
+
 
 
 

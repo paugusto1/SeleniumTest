@@ -37,4 +37,29 @@ class BookingFiltration:
 
             self.driver.implicitly_wait(10)
 
+    def filterByScore(self, numScore):
+        print(f"*[textContent='{numScore} stars']")
+
+        scoreRating = self.driver.find_element(by=By.CSS_SELECTOR,
+                                              value=f"div[data-filters-group='review_score']")
+
+        scores = []
+
+        if len(numScore) == 2:
+            for i in range(int(numScore[0])-1, 9, 1):
+                scores.append(i+1)
+        else:
+            scores.append(int(numScore))
+
+        print(scores)
+
+        self.driver.implicitly_wait(2)
+        for i in scores:
+            try:
+                scoreRating.find_element(by= By.XPATH, value= f"./descendant::div[contains(text(), '{i}+')]").click()
+            except NoSuchElementException as e:
+                print(e)
+
+        self.driver.implicitly_wait(10)
+
 
