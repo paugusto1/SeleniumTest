@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 
 from booking.constants import *
 from datetime import date, datetime, timedelta
+from booking.booking_filtration import BookingFiltration
 
 import os
 
@@ -27,7 +28,7 @@ class Booking(webdriver.Chrome):
         self.find_element(by=By.CSS_SELECTOR, value="button[data-modal-header-async-type='currencyDesktop']").click()
         self.find_element(by=By.CSS_SELECTOR, value="a[data-modal-header-async-url-param*='%s']" % curr).click()
 
-    def search(self, place = 'Campinas', conf = [1,[0, [1,2,3,4,5,6]],1], nDays = 16):
+    def search(self, place = 'New York', conf = [1,[0, [1,2,3,4,5,6]],1], nDays = 16):
         destinationInput = self.find_element(by=By.CSS_SELECTOR,
                                              value="*[data-component='search/destination/input-placeholder']")
         destinationInput.click()
@@ -101,6 +102,11 @@ class Booking(webdriver.Chrome):
         self.implicitly_wait(10)
 
         self.find_element(by=By.CLASS_NAME, value="js-sb-submit-text").click()
+
+    def apply_filtration(self):
+        filtration = BookingFiltration(driver = self)
+
+        filtration.filterByStar(numStar='1+')
 
 
 
