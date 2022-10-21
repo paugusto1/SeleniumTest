@@ -4,6 +4,8 @@ from selenium.webdriver.common.by import By
 from booking.constants import *
 from datetime import date, datetime, timedelta
 from booking.booking_filtration import BookingFiltration
+from booking.booking_report import BookingReport
+from prettytable import PrettyTable
 
 import os
 
@@ -13,7 +15,9 @@ class Booking(webdriver.Chrome):
         self.driver_path = driverpath
         self.teardown = teardown
         os.environ['PATH'] += self.driver_path
-        super(Booking, self).__init__()
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        super(Booking, self).__init__(options=options)
         self.implicitly_wait(15)
         self.maximize_window()
 
@@ -29,8 +33,8 @@ class Booking(webdriver.Chrome):
         self.find_element(by=By.CSS_SELECTOR, value="a[data-modal-header-async-url-param*='%s']" % curr).click()
 
     def search(self, place = 'New York', conf = [1,[0, [1,2,3,4,5,6]],1], nDays = 16):
-        destinationInput = self.find_element(by=By.CSS_SELECTOR,
-                                             value="*[data-component='search/destination/input-placeholder']")
+        destinationInput = self.find_element(by=By.CLASS_NAME,
+                                             value="sb-destination-label-sr")
         destinationInput.click()
 
         destinationInput.send_keys(place)
@@ -106,9 +110,22 @@ class Booking(webdriver.Chrome):
     def apply_filtration(self):
         filtration = BookingFiltration(driver = self)
 
+        filtration.sortBy(by='price')
+
         filtration.filterByStar(numStar='1+')
 
         filtration.filterByScore(numScore='8+')
+
+    def generateReports(self):
+        reporting = BookingReport(driver = self)
+
+        res = reporting.getReports()
+
+        table = PrettyTable(field_names=['Name', 'Address', 'Score', 'Price', 'Link'])
+
+        table.add_rows(res)
+
+        print(table)
 
 
 
